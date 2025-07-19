@@ -1,0 +1,98 @@
+import { useState } from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+
+export default function BillingForm() {
+  const [form, setForm] = useState({
+    eapCompany: '',
+    sessionDate: '',
+    sessionTime: '',
+    serviceType: '',
+    notes: '',
+    document: null,
+  });
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Claim submitted! (This is just a prototype.)");
+  };
+
+  return (
+    <div className="p-6 max-w-2xl mx-auto">
+      <Card className="shadow-xl">
+        <CardContent className="space-y-6">
+          <h2 className="text-xl font-semibold">Submit EAP Billing Claim</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="eapCompany">EAP Company</Label>
+              <Input
+                name="eapCompany"
+                placeholder="Enter EAP Company Name"
+                value={form.eapCompany}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="sessionDate">Session Date</Label>
+                <Input
+                  type="date"
+                  name="sessionDate"
+                  value={form.sessionDate}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <Label htmlFor="sessionTime">Session Time</Label>
+                <Input
+                  type="time"
+                  name="sessionTime"
+                  value={form.sessionTime}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="serviceType">Service Type</Label>
+              <Input
+                name="serviceType"
+                placeholder="e.g., Individual Counseling"
+                value={form.serviceType}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <Label htmlFor="notes">Session Notes (optional)</Label>
+              <Textarea
+                name="notes"
+                placeholder="Add session notes if applicable..."
+                value={form.notes}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <Label htmlFor="document">Attach Documentation</Label>
+              <Input
+                type="file"
+                name="document"
+                onChange={handleChange}
+              />
+            </div>
+            <Button type="submit" className="w-full">Submit Claim</Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
